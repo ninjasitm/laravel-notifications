@@ -3,9 +3,9 @@
 namespace Nitm\Notifications\Http\Requests\API;
 
 use Illuminate\Validation\Rule;
-use Nitm\Notifications\Models\NotificationPreference;
+use Nitm\Notifications\Models\CommunicationToken;
 
-class UpdateNotificationPreferenceAPIRequest extends CreateNotificationPreferenceAPIRequest
+class UpdateCommunicationTokenAPIRequest extends CreateCommunicationTokenAPIRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class UpdateNotificationPreferenceAPIRequest extends CreateNotificationPreferenc
      */
     public function rules()
     {
-        $rules = NotificationPreference::$rules;
+        $rules = CommunicationToken::$rules;
 
         return $rules;
     }

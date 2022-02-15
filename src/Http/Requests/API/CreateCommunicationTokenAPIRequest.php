@@ -2,13 +2,13 @@
 
 namespace Nitm\Notifications\Http\Requests\API;
 
-use Nitm\Notifications\Models\User;
-use Nitm\Notifications\Models\NotificationType;
-use Nitm\Notifications\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
+use Nitm\Content\Models\User;
 use Nitm\Notifications\Contracts\Models\SupportsNotifications;
+use Nitm\Notifications\Http\Requests\BaseFormRequest;
+use Nitm\Notifications\Models\CommunicationToken;
 
-class CreateNotificationTypeAPIRequest extends BaseFormRequest
+class CreateCommunicationTokenAPIRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class CreateNotificationTypeAPIRequest extends BaseFormRequest
      */
     public function rules()
     {
-        return NotificationType::$rules;
+        return CommunicationToken::$rules;
     }
 
     /**

@@ -2,11 +2,9 @@
 
 namespace Nitm\Notifications\Http\Requests;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Nitm\Content\Models\User;
 use InfyOm\Generator\Request\APIRequest as FormRequest;
-use Illuminate\Database\Eloquent\Model;
-use Nitm\Notifications\Models\User;
+use Nitm\Notifications\Contracts\Models\SupportsNotifications;
 
 class BaseFormRequest extends FormRequest
 {
@@ -15,7 +13,7 @@ class BaseFormRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(User $user, $model = null)
+    public function authorize(SupportsNotifications $user, $model = null)
     {
         if (!$model) {
             return true;

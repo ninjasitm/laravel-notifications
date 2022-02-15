@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74c87d50d2cefe6b7b5d5794c78764f0",
+    "content-hash": "11a0091263f2073622770aab7cc7f1cf",
     "packages": [
         {
             "name": "appointer/swaggervel",
@@ -2535,23 +2535,23 @@
         },
         {
             "name": "laravel-notification-channels/fcm",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-notification-channels/fcm.git",
-                "reference": "b057be156cba98e2fc3fc7859ade4d5b73500bfd"
+                "reference": "11666eaf5e7f3c492673f1298ac37026550b3d55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-notification-channels/fcm/zipball/b057be156cba98e2fc3fc7859ade4d5b73500bfd",
-                "reference": "b057be156cba98e2fc3fc7859ade4d5b73500bfd",
+                "url": "https://api.github.com/repos/laravel-notification-channels/fcm/zipball/11666eaf5e7f3c492673f1298ac37026550b3d55",
+                "reference": "11666eaf5e7f3c492673f1298ac37026550b3d55",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.2 || ^7.0",
                 "illuminate/notifications": "~5.6 || ~6.0 || ~7.0 || ~8.0 || ~9.0",
                 "illuminate/support": "~5.6 || ~6.0 || ~7.0 || ~8.0 || ~9.0",
-                "kreait/laravel-firebase": "^1.3 || ^2.1 || ^3.0",
+                "kreait/laravel-firebase": "^1.3 || ^2.1 || ^3.0 || ^4.0",
                 "php": ">=7.1.3",
                 "spatie/enum": "^2.3 || ^3.0"
             },
@@ -2588,22 +2588,22 @@
             "homepage": "https://github.com/laravel-notification-channels/fcm",
             "support": {
                 "issues": "https://github.com/laravel-notification-channels/fcm/issues",
-                "source": "https://github.com/laravel-notification-channels/fcm/tree/2.3.1"
+                "source": "https://github.com/laravel-notification-channels/fcm/tree/2.4.0"
             },
-            "time": "2022-02-05T01:04:14+00:00"
+            "time": "2022-02-15T00:26:51+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.0",
+            "version": "v8.83.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "29bc8779103909ebc428478b339ee6fa8703e193"
+                "reference": "bddba117f8bce2f3c9875ca1ca375a96350d0f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/29bc8779103909ebc428478b339ee6fa8703e193",
-                "reference": "29bc8779103909ebc428478b339ee6fa8703e193",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/bddba117f8bce2f3c9875ca1ca375a96350d0f4d",
+                "reference": "bddba117f8bce2f3c9875ca1ca375a96350d0f4d",
                 "shasum": ""
             },
             "require": {
@@ -2763,7 +2763,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-02-08T15:44:51+00:00"
+            "time": "2022-02-15T15:05:20+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -3817,12 +3817,12 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/nitm/laravel-base.git",
-                "reference": "9640d0c70f18f50984d7465549d29b248c1f47ce"
+                "reference": "c40d1f5d4071e3474eb1f683736a3587a69ecd56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/nitm%2Flaravel-base/repository/archive.zip?sha=9640d0c70f18f50984d7465549d29b248c1f47ce",
-                "reference": "9640d0c70f18f50984d7465549d29b248c1f47ce",
+                "url": "https://gitlab.com/api/v4/projects/nitm%2Flaravel-base/repository/archive.zip?sha=c40d1f5d4071e3474eb1f683736a3587a69ecd56",
+                "reference": "c40d1f5d4071e3474eb1f683736a3587a69ecd56",
                 "shasum": ""
             },
             "require": {
@@ -3880,7 +3880,7 @@
                 "docs": "https://gitlab.com/nitm/laravel-base/wiki",
                 "source": "https://gitlab.com/nitm/laravel-base"
             },
-            "time": "2022-02-15T03:14:10+00:00"
+            "time": "2022-02-15T16:03:54+00:00"
         },
         {
             "name": "opis/closure",
@@ -10999,16 +10999,16 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.29.2",
+            "version": "1.29.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "6465e1fe7faefdd66aede0952033863181548551"
+                "reference": "440cda76812a7770e6684d19683444c608e135e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/6465e1fe7faefdd66aede0952033863181548551",
-                "reference": "6465e1fe7faefdd66aede0952033863181548551",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/440cda76812a7770e6684d19683444c608e135e4",
+                "reference": "440cda76812a7770e6684d19683444c608e135e4",
                 "shasum": ""
             },
             "require": {
@@ -11067,7 +11067,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.29.2"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.29.3"
             },
             "funding": [
                 {
@@ -11079,7 +11079,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-02-13T15:39:44+00:00"
+            "time": "2022-02-15T14:52:59+00:00"
         },
         {
             "name": "spatie/macroable",

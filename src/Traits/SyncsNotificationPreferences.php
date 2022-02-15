@@ -2,7 +2,7 @@
 
 namespace Nitm\Notifications\Traits;
 
-use Nitm\Notifications\Team;
+use Nitm\Content\Models\Team;
 use Nitm\Notifications\Models\User;
 use Illuminate\Support\Arr;
 use Nitm\Notifications\Models\NotificationType;

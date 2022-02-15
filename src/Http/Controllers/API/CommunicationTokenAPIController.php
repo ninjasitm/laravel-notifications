@@ -3,20 +3,20 @@
 namespace Nitm\Notifications\Http\Controllers\API;
 
 use Nitm\Content\Models\Team;
-use Nitm\Notifications\Http\Requests\API\CreateNotificationTypeAPIRequest;
-use Nitm\Notifications\Http\Requests\API\UpdateNotificationTypeAPIRequest;
-use Nitm\Notifications\Models\NotificationType;
-use Nitm\Notifications\Repositories\NotificationTypeRepository;
-use Nitm\Notifications\Http\Controllers\BaseControllers\CustomController;
+use Nitm\Notifications\Http\Requests\API\CreateCommunicationTokenAPIRequest;
+use Nitm\Notifications\Http\Requests\API\UpdateCommunicationTokenAPIRequest;
+use Nitm\Notifications\Models\CommunicationToken;
+use Nitm\Notifications\Repositories\CommunicationTokenRepository;
+use Nitm\Notifications\Http\Controllers\API\ApiController;
 use Illuminate\Http\Request;
 use Response;
 
 /**
- * Class NotificationTypeController
+ * Class CommunicationTokenController
  * @package App\Http\Controllers\Api
  */
 
-class NotificationTypeAPIController extends CustomController
+class CommunicationTokenAPIController extends ApiController
 {
     /**
      * Get the repository class
@@ -25,7 +25,7 @@ class NotificationTypeAPIController extends CustomController
      */
     public function repository()
     {
-        return NotificationTypeRepository::class;
+        return CommunicationTokenRepository::class;
     }
 
     /**
@@ -33,10 +33,10 @@ class NotificationTypeAPIController extends CustomController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/api/notifications/types",
-     *      summary="Get a listing of the NotificationTypes.",
-     *      tags={"NotificationType"},
-     *      description="Get all NotificationTypes",
+     *      path="/notifications/communication-tokens",
+     *      summary="Get a listing of the CommunicationTokens.",
+     *      tags={"CommunicationToken"},
+     *      description="Get all CommunicationTokens",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Response(
@@ -51,7 +51,7 @@ class NotificationTypeAPIController extends CustomController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/NotificationType")
+     *                  @SWG\Items(ref="#/definitions/CommunicationToken")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -63,28 +63,28 @@ class NotificationTypeAPIController extends CustomController
      */
     public function index(Request $request, Team $team)
     {
-        $models = $this->getRepository()->search($request->all());
+        $models = $request->user()->communicationTokens();
 
-        return $this->paginate($request, $models, 'Notification Types retrieved successfully');
+        return $this->paginate($request, $models, 'CommunicationToken Preferences retrieved successfully');
     }
 
     /**
-     * @param CreateNotificationTypeAPIRequest $request
+     * @param CreateCommunicationTokenAPIRequest $request
      * @return Response
      *
      * @SWG\Post(
-     *      path="/api/notifications/types",
-     *      summary="Store a newly created NotificationType in storage",
-     *      tags={"NotificationType"},
-     *      description="Store NotificationType",
+     *      path="/notifications/communication-tokens",
+     *      summary="Store a newly created CommunicationToken in storage",
+     *      tags={"CommunicationToken"},
+     *      description="Store CommunicationToken",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="NotificationType that should be stored",
+     *          description="CommunicationToken that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/NotificationType")
+     *          @SWG\Schema(ref="#/definitions/CommunicationToken")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -97,7 +97,7 @@ class NotificationTypeAPIController extends CustomController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/NotificationType"
+     *                  ref="#/definitions/CommunicationToken"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -107,13 +107,13 @@ class NotificationTypeAPIController extends CustomController
      *      )
      * )
      */
-    public function store(CreateNotificationTypeAPIRequest $request, Team $team)
+    public function store(CreateCommunicationTokenAPIRequest $request, Team $team)
     {
         $input = $request->all();
 
         $model = $this->getRepository()->create($input);
 
-        return $this->printModelSuccess($model, 'Notification Type saved successfully');
+        return $this->printModelSuccess($model, 'CommunicationToken Preference saved successfully');
     }
 
     /**
@@ -121,15 +121,15 @@ class NotificationTypeAPIController extends CustomController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/api/notifications/types/{id}",
-     *      summary="Display the specified NotificationType",
-     *      tags={"NotificationType"},
-     *      description="Get NotificationType",
+     *      path="/notifications/communication-tokens/{id}",
+     *      summary="Display the specified CommunicationToken",
+     *      tags={"CommunicationToken"},
+     *      description="Get CommunicationToken",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of NotificationType",
+     *          description="id of CommunicationToken",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -145,7 +145,7 @@ class NotificationTypeAPIController extends CustomController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/NotificationType"
+     *                  ref="#/definitions/CommunicationToken"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -157,27 +157,27 @@ class NotificationTypeAPIController extends CustomController
      */
     public function show(Request $request, Team $team, $id)
     {
-        /** @var NotificationType $model */
+        /** @var CommunicationToken $model */
         $model = $this->getRepository()->findOrFail($id);
 
-        return $this->printModelSuccess($model, 'Notification Type retrieved successfully');
+        return $this->printModelSuccess($model, 'CommunicationToken Preference retrieved successfully');
     }
 
     /**
      * @param int $id
-     * @param UpdateNotificationTypeAPIRequest $request
+     * @param UpdateCommunicationTokenAPIRequest $request
      * @return Response
      *
      * @SWG\Put(
-     *      path="/api/notifications/types/{id}",
-     *      summary="Update the specified NotificationType in storage",
-     *      tags={"NotificationType"},
-     *      description="Update NotificationType",
+     *      path="/notifications/communication-tokens/{id}",
+     *      summary="Update the specified CommunicationToken in storage",
+     *      tags={"CommunicationToken"},
+     *      description="Update CommunicationToken",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of NotificationType",
+     *          description="id of CommunicationToken",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -185,9 +185,9 @@ class NotificationTypeAPIController extends CustomController
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="NotificationType that should be updated",
+     *          description="CommunicationToken that should be updated",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/NotificationType")
+     *          @SWG\Schema(ref="#/definitions/CommunicationToken")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -200,7 +200,7 @@ class NotificationTypeAPIController extends CustomController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/NotificationType"
+     *                  ref="#/definitions/CommunicationToken"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -210,16 +210,16 @@ class NotificationTypeAPIController extends CustomController
      *      )
      * )
      */
-    public function update(UpdateNotificationTypeAPIRequest $request, Team $team, $id)
+    public function update(UpdateCommunicationTokenAPIRequest $request, Team $team, $id)
     {
         $input = $request->all();
 
-        /** @var NotificationType $model */
+        /** @var CommunicationToken $model */
         $this->getRepository()->existsOrFail($id);
 
         $model = $this->getRepository()->update($input, $id);
 
-        return $this->printModelSuccess($model, 'NotificationType updated successfully');
+        return $this->printModelSuccess($model, 'CommunicationToken updated successfully');
     }
 
     /**
@@ -227,15 +227,15 @@ class NotificationTypeAPIController extends CustomController
      * @return Response
      *
      * @SWG\Delete(
-     *      path="/api/notifications/types/{id}",
-     *      summary="Remove the specified NotificationType from storage",
-     *      tags={"NotificationType"},
-     *      description="Delete NotificationType",
+     *      path="/notifications/communication-tokens/{id}",
+     *      summary="Remove the specified CommunicationToken from storage",
+     *      tags={"CommunicationToken"},
+     *      description="Delete CommunicationToken",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of NotificationType",
+     *          description="id of CommunicationToken",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -263,9 +263,9 @@ class NotificationTypeAPIController extends CustomController
      */
     public function destroy(Request $request, Team $team, $id)
     {
-        /** @var NotificationType $model */
+        /** @var CommunicationToken $model */
         $model = $this->getRepository()->findOrFail($id);
 
-        return $this->printModelSuccess($model->delete(), 'Notification Type deleted successfully');
+        return $this->printModelSuccess($model->delete(), 'CommunicationToken Preference deleted successfully');
     }
 }

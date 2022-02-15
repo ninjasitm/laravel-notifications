@@ -2,10 +2,14 @@
 
 namespace Nitm\Notifications;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Nitm\Notifications\Models\Product;
-use Nitm\Notifications\Observers\Product as ProductObserver;
-use Nitm\Notifications\Stripe\StripeService;
+use Nitm\Notifications\NitmNotifications;
+use Nitm\Notifications\Models\Notification;
+use Nitm\Notifications\Models\NotificationPreference;
+use Nitm\Notifications\Contracts\Models\SupportsNotifications;
+use Nitm\Notifications\Models\Announcement;
+use Nitm\Notifications\Models\CommunicationToken;
 
 class NotificationsServiceProvider extends ServiceProvider
 {
@@ -33,6 +37,37 @@ class NotificationsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'nitm-notifications');
+        $this->registerBindings();
+        $this->defineRouteBindings();
+    }
+
+    /**
+     * Register bindings
+     *
+     * @return void
+     */
+    protected function registerBindings()
+    {
+        $bindings = [
+            SupportsNotifications::class => NitmNotifications::userModel(),
+        ];
+
+        foreach ($bindings as $key => $value) {
+            $this->app->bind($key, $value);
+        }
+    }
+
+    /**
+     * Define the NitmContent route model bindings.
+     *
+     * @return void
+     */
+    protected function defineRouteBindings()
+    {
+        Route::model('notification', config('nitm-notifications.notification_model', Notification::class));
+        Route::model('preference', config('nitm-notifications.notification_preference_model', NotificationPreference::class));
+        Route::model('announcement', config('nitm-notifications.announcement_model', Announcement::class));
+        Route::model('communicationToken', config('nitm-notifications.communication_token_model', CommunicationToken::class));
     }
 
     /**

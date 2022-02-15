@@ -4,6 +4,7 @@ namespace Nitm\Notifications\Models;
 
 use Illuminate\Support\Arr;
 use Nitm\Content\Models\Model as Model;
+use Nitm\Notifications\Contracts\Models\SupportsNotifications;
 
 /**
  * @SWG\Definition(
@@ -98,5 +99,11 @@ class CommunicationToken extends Model
     {
         $id = Arr::get($this->attributes, 'device_id');
         return json_decode($id, true) ?? $id;
+    }
+
+    public function scopeForUser($query, SupportsNotifications $user = null)
+    {
+        $user = $user ?? auth()->user();
+        $query->whereUserId($user ? $user->id : -1);
     }
 }

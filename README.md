@@ -1,62 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Installation
+```
+composer require nitm/laravel-notifications
+```
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+You may also want to add the custom repository to your `composer.json` file.
 
-## About Laravel
+```
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Once installed you can publish the assets using the `php artisan vendor:publish` command and selecting the tags you want to publish.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```
+nitm-notifications-config for configuration files
+nitm-notifications-migrations for migrations
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Basics
+This package supports notifications, announcements and firebase FCM communication channels for mobile push notifications.
+## Notifications
+Create notifications, announcement and preferences according to your application needs. You may use Nova to create and manage these resources as needed.
+## Communication Tokens
+Use communication tokens to register unique devices in order to send notifications to users.
 
-## Learning Laravel
+# Classes
+Use the following classes to help reduce boilerplate behavior:
+- Extend notifications from the `Nitm\Notifications\Notifications\BaseNotification` class
+- Extend events from the `Nitm\Notifications\Events\BaseUserEvent` class
+- Extend listeners from the `Nitm\Notifications\Listeners\BaseUserListener` class
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Events
+You may listen to the various events to handle notifications.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+For example in your `EventServiceProvider` class. Disable an enable as needed:
+```
+        \App\Events\NotifyAdmins::class => [
+             \App\Listeners\NotifyAdminsOfActivity::class
+        ],
 
-## Laravel Sponsors
+        \App\Events\NotifyUsers::class => [
+            \App\Listeners\NotifyUsersOfActivity::class
+        ],
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+        \App\Events\NotifyCustom::class => [
+             \App\Listeners\NotifyCustomOfActivity::class
+        ],
 
-### Premium Partners
+        \App\Events\NotifyUser::class => [
+            \App\Listeners\NotifyUserOfActivity::class
+        ],
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+        /**
+         * Feed notifications
+         */
 
-## Contributing
+        \App\Events\FeedNotificationWasReceived::class => [
+            \App\Listeners\FeedNotificationWasReceived::class
+        ],
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Routes
+```
++--------+-----------+-------------------------------------------------------------+------------------------------------------------+----------------------------------------------------------------------------------------+------------+
+| Domain | Method    | URI                                                         | Name                                           | Action                                                                                 | Middleware |
++--------+-----------+-------------------------------------------------------------+------------------------------------------------+----------------------------------------------------------------------------------------+------------+
+|        | GET|HEAD  | api/notifications                                           | notifications.index                            | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@index                | api        |
+|        | POST      | api/notifications                                           | notifications.store                            | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@store                | api        |
+|        | GET|HEAD  | api/notifications/announcements                             | notifications.announcements.index              | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@index                | api        |
+|        | POST      | api/notifications/announcements                             | notifications.announcements.store              | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@store                | api        |
+|        | GET|HEAD  | api/notifications/announcements/form-config                 | notifications.announcements.config             | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@formConfig           | api        |
+|        | POST      | api/notifications/announcements/{announcement}              | notifications.announcements.update-post        | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@update               | api        |
+|        | GET|HEAD  | api/notifications/announcements/{announcement}              | notifications.announcements.show               | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@show                 | api        |
+|        | PUT|PATCH | api/notifications/announcements/{announcement}              | notifications.announcements.update             | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@update               | api        |
+|        | DELETE    | api/notifications/announcements/{announcement}              | notifications.announcements.destroy            | Nitm\Notifications\Http\Controllers\API\AnnouncementAPIController@destroy              | api        |
+|        | GET|HEAD  | api/notifications/communication-tokens                      | notifications.communication-tokens.index       | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@index          | api        |
+|        | POST      | api/notifications/communication-tokens                      | notifications.communication-tokens.store       | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@store          | api        |
+|        | GET|HEAD  | api/notifications/communication-tokens/form-config          | notifications.communication-tokens.config      | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@formConfig     | api        |
+|        | POST      | api/notifications/communication-tokens/{communicationToken} | notifications.communication-tokens.update-post | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@update         | api        |
+|        | GET|HEAD  | api/notifications/communication-tokens/{communicationToken} | notifications.communication-tokens.show        | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@show           | api        |
+|        | PUT|PATCH | api/notifications/communication-tokens/{communicationToken} | notifications.communication-tokens.update      | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@update         | api        |
+|        | DELETE    | api/notifications/communication-tokens/{communicationToken} | notifications.communication-tokens.destroy     | Nitm\Notifications\Http\Controllers\API\CommunicationTokenAPIController@destroy        | api        |
+|        | GET|HEAD  | api/notifications/form-config                               | notifications.config                           | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@formConfig           | api        |
+|        | GET|HEAD  | api/notifications/preferences                               | notifications.preferences.index                | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@index      | api        |
+|        | POST      | api/notifications/preferences                               | notifications.preferences.store                | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@store      | api        |
+|        | GET|HEAD  | api/notifications/preferences/form-config                   | notifications.preferences.config               | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@formConfig | api        |
+|        | POST      | api/notifications/preferences/{preference}                  | notifications.preferences.update-post          | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@update     | api        |
+|        | GET|HEAD  | api/notifications/preferences/{preference}                  | notifications.preferences.show                 | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@show       | api        |
+|        | PUT|PATCH | api/notifications/preferences/{preference}                  | notifications.preferences.update               | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@update     | api        |
+|        | DELETE    | api/notifications/preferences/{preference}                  | notifications.preferences.destroy              | Nitm\Notifications\Http\Controllers\API\NotificationPreferenceAPIController@destroy    | api        |
+|        | POST      | api/notifications/{notification}                            | notifications.update-post                      | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@update               | api        |
+|        | GET|HEAD  | api/notifications/{notification}                            | notifications.show                             | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@show                 | api        |
+|        | PUT|PATCH | api/notifications/{notification}                            | notifications.update                           | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@update               | api        |
+|        | DELETE    | api/notifications/{notification}                            | notifications.destroy                          | Nitm\Notifications\Http\Controllers\API\NotificationAPIController@destroy              | api        |
++--------+-----------+-------------------------------------------------------------+------------------------------------------------+----------------------------------------------------------------------------------------+------------+
+```
+## Customization
+You may customize the route names, middleware and prefixes in the `nitm-notification.php` configuration.

@@ -8,40 +8,40 @@ use Tests\TestCase;
 class NotificationsApiTest extends TestCase
 {
 
-    // /**
-    //  * @test
-    //  */
-    // public function test_create_notification()
-    // {
-    //     $notification = Notification::factory()->make()->toArray();
+    /**
+     * @test
+     */
+    public function test_create_notification()
+    {
+        $notification = Notification::factory()->make()->toArray();
 
-    //     $this->response = $this->json(
-    //         'POST',
-    //         '/api/notifications',
-    //         $notification
-    //     );
+        $this->response = $this->json(
+            'POST',
+            '/api/notifications',
+            $notification
+        );
 
-    //     $this->assertApiResponse($notification);
-    // }
+        $this->assertApiResponse($notification);
+    }
 
-    // /**
-    //  * @test
-    //  */
-    // public function test_read_notification()
-    // {
-    //     $notification = Notification::factory()->create();
+    /**
+     * @test
+     */
+    public function test_read_notification()
+    {
+        $notification = Notification::factory()->create();
 
-    //     $this->response = $this->json(
-    //         'GET',
-    //         '/api/notifications/' . $notification->id
-    //     );
+        $this->response = $this->json(
+            'GET',
+            '/api/notifications/' . $notification->id
+        );
 
-    //     $this->assertApiResponse($notification->toArray());
-    // }
+        $this->assertApiResponse($notification->toArray());
+    }
 
-    // /**
-    //  * @test
-    //  */
+    /**
+     * @test
+     */
     // public function test_update_notification()
     // {
     //     $notification       = Notification::factory()->create();
@@ -56,9 +56,9 @@ class NotificationsApiTest extends TestCase
     //     $this->assertApiResponse($editedNotification);
     // }
 
-    // /**
-    //  * @test
-    //  */
+    /**
+     * @test
+     */
     // public function test_delete_notification()
     // {
     //     $notification = Notification::factory()->create();

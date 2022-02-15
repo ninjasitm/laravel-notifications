@@ -6,6 +6,7 @@ use Nitm\Notifications\Models\User;
 use Nitm\Notifications\Models\NotificationPreference;
 use Nitm\Notifications\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
+use Nitm\Notifications\Contracts\Models\SupportsNotifications;
 
 class CreateNotificationPreferenceAPIRequest extends BaseFormRequest
 {
@@ -14,7 +15,7 @@ class CreateNotificationPreferenceAPIRequest extends BaseFormRequest
      *
      * @return bool
      */
-    public function authorize(User $user, $model = null)
+    public function authorize(SupportsNotifications $user, $model = null)
     {
         return parent::authorize($user, $model);
     }

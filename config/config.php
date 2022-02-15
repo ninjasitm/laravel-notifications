@@ -29,13 +29,14 @@ return [
     /**
      * Communication Token model
      */
-    'communication_token_model'    => env('NITM_NOTIFICATIONS_COMMUNICATION_TOKEN_MODEL', 'Nitm\Notifications\Models\CommunicationToken'),
+    'communication_token_model'     => env('NITM_NOTIFICATIONS_COMMUNICATION_TOKEN_MODEL', 'Nitm\Notifications\Models\CommunicationToken'),
 
     /**
      * Routes configuration
      */
     'routes'                        => [
-        'prefix'     => env('NITM_NOTIFICATIONS_ROUTES_PREFIX', 'connected-accounts'),
+        'prefix'     => env('NITM_NOTIFICATIONS_ROUTES_PREFIX', 'api/notifications'),
+        'name'       => env('NITM_NOTIFICATIONS_ROUTES_PREFIX', 'notifications'),
         'middleware' => env('NITM_NOTIFICATIONS_ROUTES_MIDDLEWARE', ['api']),
     ],
 

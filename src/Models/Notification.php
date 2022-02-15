@@ -4,15 +4,16 @@ namespace Nitm\Notifications\Models;
 
 use Parsedown;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Nitm\Content\NitmContent;
+use Nitm\Content\Models\Model;
 use Nitm\Content\Traits\SetUuid;
-use Illuminate\Database\Eloquent\Model;
+use Nitm\Content\Traits\SetUserId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Notification extends Model
 {
-    use HasFactory, SetUuid;
-
+    use SetUuid;
     // use DatesTimezoneConversion;
 
     protected $dates = ['created_at', 'updated_at'];
@@ -74,15 +75,16 @@ class Notification extends Model
      */
     protected $uuidFields = ['id'];
 
-    protected $fillable = ['action_text', 'action_url', 'body', 'read', 'type', 'user_id', 'icon'];
+    protected $fillable = ['id', 'action_text', 'action_url', 'body', 'read', 'type', 'user_id', 'icon'];
 
     /**
-     * Get the user the notification belongs to.
+     * Validation rules
+     *
+     * @var array
      */
-    public function user()
-    {
-        return $this->belongsTo(NitmContent::userModel(), 'user_id');
-    }
+    public static $rules = [
+        'body' => 'required',
+    ];
 
     /**
      * Get the user that created the notification (if any).

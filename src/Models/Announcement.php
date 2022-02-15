@@ -4,8 +4,8 @@ namespace Nitm\Notifications\Models;
 
 use Parsedown;
 use Illuminate\Support\Arr;
+use Nitm\Content\Models\Model;
 use Nitm\Content\Traits\SetUuid;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Announcement extends Model
@@ -60,6 +60,15 @@ class Announcement extends Model
      * @var array
      */
     protected $uuidFields = ['id'];
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'body' => 'required'
+    ];
 
     /**
      * Get the user that created the announcement.

@@ -2,21 +2,22 @@
 
 namespace Nitm\Notifications\Http\Controllers\API;
 
-use Nitm\Content\Models\Team;
-use Nitm\Notifications\Http\Requests\API\CreateNotificationTypeAPIRequest;
-use Nitm\Notifications\Http\Requests\API\UpdateNotificationTypeAPIRequest;
-use Nitm\Notifications\Models\NotificationType;
-use Nitm\Notifications\Repositories\NotificationTypeRepository;
-use Nitm\Notifications\Http\Controllers\BaseControllers\CustomController;
-use Illuminate\Http\Request;
 use Response;
+use Illuminate\Http\Request;
+use Nitm\Content\Models\Team;
+use Illuminate\Database\Eloquent\Model;
+use Nitm\Notifications\Models\Notification;
+use Nitm\Notifications\Http\Controllers\API\ApiController;
+use Nitm\Notifications\Repositories\NotificationRepository;
+use Nitm\Notifications\Http\Requests\API\CreateNotificationAPIRequest;
+use Nitm\Notifications\Http\Requests\API\UpdateNotificationAPIRequest;
 
 /**
- * Class NotificationTypeController
+ * Class NotificationController
  * @package App\Http\Controllers\Api
  */
 
-class NotificationTypeAPIController extends CustomController
+class NotificationAPIController extends ApiController
 {
     /**
      * Get the repository class
@@ -25,7 +26,7 @@ class NotificationTypeAPIController extends CustomController
      */
     public function repository()
     {
-        return NotificationTypeRepository::class;
+        return NotificationRepository::class;
     }
 
     /**
@@ -33,10 +34,10 @@ class NotificationTypeAPIController extends CustomController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/api/notifications/types",
-     *      summary="Get a listing of the NotificationTypes.",
-     *      tags={"NotificationType"},
-     *      description="Get all NotificationTypes",
+     *      path="/api/notifications",
+     *      summary="Get a listing of the Notifications.",
+     *      tags={"Notification"},
+     *      description="Get all Notifications",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Response(
@@ -51,7 +52,7 @@ class NotificationTypeAPIController extends CustomController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/NotificationType")
+     *                  @SWG\Items(ref="#/definitions/Notification")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -63,28 +64,34 @@ class NotificationTypeAPIController extends CustomController
      */
     public function index(Request $request, Team $team)
     {
-        $models = $this->getRepository()->search($request->all());
+        $models = collect([]);
+        $owner = $team->exists ? $team : $request->user();
+        if (!$owner->notificationPreferences()->count()) {
+            $owner->initNotifications();
+        }
 
-        return $this->paginate($request, $models, 'Notification Types retrieved successfully');
+        $models = $owner->notificationPreferences();
+
+        return $this->paginate($request, $models->sortByGroup(), 'Notification Preferences retrieved successfully');
     }
 
     /**
-     * @param CreateNotificationTypeAPIRequest $request
+     * @param CreateNotificationAPIRequest $request
      * @return Response
      *
      * @SWG\Post(
-     *      path="/api/notifications/types",
-     *      summary="Store a newly created NotificationType in storage",
-     *      tags={"NotificationType"},
-     *      description="Store NotificationType",
+     *      path="/api/notifications",
+     *      summary="Store a newly created Notification in storage",
+     *      tags={"Notification"},
+     *      description="Store Notification",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="NotificationType that should be stored",
+     *          description="Notification that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/NotificationType")
+     *          @SWG\Schema(ref="#/definitions/Notification")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -97,7 +104,7 @@ class NotificationTypeAPIController extends CustomController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/NotificationType"
+     *                  ref="#/definitions/Notification"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -107,13 +114,13 @@ class NotificationTypeAPIController extends CustomController
      *      )
      * )
      */
-    public function store(CreateNotificationTypeAPIRequest $request, Team $team)
+    public function store(CreateNotificationAPIRequest $request, Team $team)
     {
         $input = $request->all();
 
         $model = $this->getRepository()->create($input);
 
-        return $this->printModelSuccess($model, 'Notification Type saved successfully');
+        return $this->printModelSuccess($model, 'Notification Preference saved successfully');
     }
 
     /**
@@ -121,15 +128,15 @@ class NotificationTypeAPIController extends CustomController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/api/notifications/types/{id}",
-     *      summary="Display the specified NotificationType",
-     *      tags={"NotificationType"},
-     *      description="Get NotificationType",
+     *      path="/notifications/preferences/{id}",
+     *      summary="Display the specified Notification",
+     *      tags={"Notification"},
+     *      description="Get Notification",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of NotificationType",
+     *          description="id of Notification",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -145,7 +152,7 @@ class NotificationTypeAPIController extends CustomController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/NotificationType"
+     *                  ref="#/definitions/Notification"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -157,27 +164,27 @@ class NotificationTypeAPIController extends CustomController
      */
     public function show(Request $request, Team $team, $id)
     {
-        /** @var NotificationType $model */
-        $model = $this->getRepository()->findOrFail($id);
+        /** @var Notification $model */
+        $model = $this->getRepository()->findOrFail($id instanceof Model ? $id : ['id' => $id]);
 
-        return $this->printModelSuccess($model, 'Notification Type retrieved successfully');
+        return $this->printModelSuccess($model, 'Notification Preference retrieved successfully');
     }
 
     /**
      * @param int $id
-     * @param UpdateNotificationTypeAPIRequest $request
+     * @param UpdateNotificationAPIRequest $request
      * @return Response
      *
      * @SWG\Put(
-     *      path="/api/notifications/types/{id}",
-     *      summary="Update the specified NotificationType in storage",
-     *      tags={"NotificationType"},
-     *      description="Update NotificationType",
+     *      path="/notifications/preferences/{id}",
+     *      summary="Update the specified Notification in storage",
+     *      tags={"Notification"},
+     *      description="Update Notification",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of NotificationType",
+     *          description="id of Notification",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -185,9 +192,9 @@ class NotificationTypeAPIController extends CustomController
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="NotificationType that should be updated",
+     *          description="Notification that should be updated",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/NotificationType")
+     *          @SWG\Schema(ref="#/definitions/Notification")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -200,7 +207,7 @@ class NotificationTypeAPIController extends CustomController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/NotificationType"
+     *                  ref="#/definitions/Notification"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -210,16 +217,13 @@ class NotificationTypeAPIController extends CustomController
      *      )
      * )
      */
-    public function update(UpdateNotificationTypeAPIRequest $request, Team $team, $id)
+    public function update(UpdateNotificationAPIRequest $request, Team $team, $id)
     {
         $input = $request->all();
 
-        /** @var NotificationType $model */
-        $this->getRepository()->existsOrFail($id);
+        $model = $this->getRepository()->update($input, $id instanceof Model ? $id : ['id' => $id]);
 
-        $model = $this->getRepository()->update($input, $id);
-
-        return $this->printModelSuccess($model, 'NotificationType updated successfully');
+        return $this->printModelSuccess($model, 'Notification updated successfully');
     }
 
     /**
@@ -227,15 +231,15 @@ class NotificationTypeAPIController extends CustomController
      * @return Response
      *
      * @SWG\Delete(
-     *      path="/api/notifications/types/{id}",
-     *      summary="Remove the specified NotificationType from storage",
-     *      tags={"NotificationType"},
-     *      description="Delete NotificationType",
+     *      path="/notifications/preferences/{id}",
+     *      summary="Remove the specified Notification from storage",
+     *      tags={"Notification"},
+     *      description="Delete Notification",
      *      produces={"application/json"},
      *      security={{"Bearer":{}}},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of NotificationType",
+     *          description="id of Notification",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -263,9 +267,9 @@ class NotificationTypeAPIController extends CustomController
      */
     public function destroy(Request $request, Team $team, $id)
     {
-        /** @var NotificationType $model */
-        $model = $this->getRepository()->findOrFail($id);
+        /** @var Notification $model */
+        $model = $this->getRepository()->findOrFail($id instanceof Model ? $id : ['id' => $id]);
 
-        return $this->printModelSuccess($model->delete(), 'Notification Type deleted successfully');
+        return $this->printModelSuccess($model->delete(), 'Notification Preference deleted successfully');
     }
 }

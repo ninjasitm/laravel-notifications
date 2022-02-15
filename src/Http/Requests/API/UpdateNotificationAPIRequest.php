@@ -2,10 +2,11 @@
 
 namespace Nitm\Notifications\Http\Requests\API;
 
+use Nitm\Notifications\Models\User;
+use Nitm\Notifications\Models\Notification;
 use Illuminate\Validation\Rule;
-use Nitm\Notifications\Models\NotificationPreference;
 
-class UpdateNotificationPreferenceAPIRequest extends CreateNotificationPreferenceAPIRequest
+class UpdateNotificationAPIRequest extends CreateNotificationAPIRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +15,7 @@ class UpdateNotificationPreferenceAPIRequest extends CreateNotificationPreferenc
      */
     public function rules()
     {
-        $rules = NotificationPreference::$rules;
+        $rules = Notification::$rules;
 
         return $rules;
     }

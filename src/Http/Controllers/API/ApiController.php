@@ -49,7 +49,7 @@ class ApiController extends BaseApiController
      * @param  \Illuminate\Contracts\Auth\StatefulGuard $guard
      * @return void
      */
-    public function __construct(StatefulGuard $guard)
+    public function __construct($guard = null)
     {
         $this->guard = $guard;
     }

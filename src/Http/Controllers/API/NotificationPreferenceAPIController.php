@@ -2,7 +2,7 @@
 
 namespace Nitm\Notifications\Http\Controllers\API;
 
-use Nitm\Notifications\Team;
+use Nitm\Content\Models\Team;
 use Nitm\Notifications\Http\Requests\API\CreateNotificationPreferenceAPIRequest;
 use Nitm\Notifications\Http\Requests\API\UpdateNotificationPreferenceAPIRequest;
 use Nitm\Notifications\Models\NotificationPreference;
@@ -33,7 +33,7 @@ class NotificationPreferenceAPIController extends ApiController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/notificationPreferences",
+     *      path="/api/notifications/preferences",
      *      summary="Get a listing of the NotificationPreferences.",
      *      tags={"NotificationPreference"},
      *      description="Get all NotificationPreferences",
@@ -79,7 +79,7 @@ class NotificationPreferenceAPIController extends ApiController
      * @return Response
      *
      * @SWG\Post(
-     *      path="/notificationPreferences",
+     *      path="/api/notifications/preferences",
      *      summary="Store a newly created NotificationPreference in storage",
      *      tags={"NotificationPreference"},
      *      description="Store NotificationPreference",
