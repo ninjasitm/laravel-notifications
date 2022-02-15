@@ -1,6 +1,6 @@
 {
-    "name": "nitm/laravel-connected-accounts",
-    "description": "Social auth and connected accounts support",
+    "name": "nitm/laravel-notifications",
+    "description": "Support for notifications",
     "type": "project",
     "authors": [
         {
