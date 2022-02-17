@@ -29,3 +29,5 @@ dump\.rdb
 *.onetoc2
 *.swp
 .rnd
+
+.phpunit.result.cache
