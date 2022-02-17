@@ -7,8 +7,9 @@ use Illuminate\Support\Arr;
 use Nitm\Content\Models\Model;
 use Nitm\Content\Traits\SetUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Nitm\Notifications\Contracts\Models\Announcement as ModelsAnnouncement;
 
-class Announcement extends Model
+class Announcement extends Model implements ModelsAnnouncement
 {
     use HasFactory, SetUuid;
 

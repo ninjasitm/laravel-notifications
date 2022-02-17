@@ -5,6 +5,7 @@ namespace Nitm\Notifications\Models;
 use Nitm\Content\Models\Model as Model;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Nitm\Notifications\Contracts\Models\NotificationPreference as ModelsNotificationPreference;
 
 /**
  * @SWG\Definition(
@@ -79,7 +80,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class NotificationPreference extends Model
+class NotificationPreference extends Model implements ModelsNotificationPreference
 {
     use SoftDeletes;
 

@@ -4,6 +4,7 @@ namespace Nitm\Notifications\Models;
 
 use Illuminate\Support\Arr;
 use Nitm\Content\Models\Model as Model;
+use Nitm\Notifications\Contracts\Models\CommunicationToken as ModelsCommunicationToken;
 use Nitm\Notifications\Contracts\Models\SupportsNotifications;
 
 /**
@@ -51,7 +52,7 @@ use Nitm\Notifications\Contracts\Models\SupportsNotifications;
  *      )
  * )
  */
-class CommunicationToken extends Model
+class CommunicationToken extends Model implements ModelsCommunicationToken
 {
     public $table = 'communication_tokens';
 

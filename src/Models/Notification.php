@@ -10,8 +10,9 @@ use Nitm\Content\Models\Model;
 use Nitm\Content\Traits\SetUuid;
 use Nitm\Content\Traits\SetUserId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Nitm\Notifications\Contracts\Models\Notification as ModelsNotification;
 
-class Notification extends Model
+class Notification extends Model implements ModelsNotification
 {
     use SetUuid;
     // use DatesTimezoneConversion;
